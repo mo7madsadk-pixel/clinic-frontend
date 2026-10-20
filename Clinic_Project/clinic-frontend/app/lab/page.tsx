@@ -14,7 +14,7 @@ export default function LabDashboard() {
     const token = document.cookie.split('token=')[1]?.split(';')[0];
     if(!token) return;
     try {
-      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/v1/lab/requests', { 
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/lab/requests`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if(res.ok) setRequests(await res.json());
