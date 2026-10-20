@@ -4,11 +4,8 @@ import { useState, useContext, useEffect, useCallback } from 'react';
 import { LocaleContext } from '@/providers/locale-provider';
 import { CheckCircle, Search, UserPlus, Loader2 } from 'lucide-react';
 
-// OPTIMIZATION: Extract the base API URL to a constant to avoid hardcoding it multiple times.
-// In a real production environment, use process.env.NEXT_PUBLIC_API_URL.
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-// OPTIMIZATION: Create a helper function to reliably extract the token and keep the code DRY.
 const getAuthToken = () => {
   if (typeof document === 'undefined') return null;
   const match = document.cookie.match(new RegExp('(^| )token=([^;]+)'));
@@ -32,15 +29,12 @@ export default function ReceptionistDashboard() {
   const [selectedClinic, setSelectedClinic] = useState<number>(1);
   const [sessionType, setSessionType] = useState('استشارة أولية');
 
-  // RESILIENCE: Added a loading state to prevent multiple rapid form submissions (double-booking).
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // OPTIMIZATION: Wrapped in useCallback to prevent unnecessary re-creations on every render.
   const fetchAppointments = useCallback(async () => {
     const token = getAuthToken();
     if (!token) return;
     
-    // RESILIENCE: Added try/catch block to prevent app crash if the backend is down.
     try {
       const res = await fetch(`${API_URL}/api/v1/receptionist/appointments`, {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -60,7 +54,6 @@ export default function ReceptionistDashboard() {
     const token = getAuthToken();
     if (!token) return;
 
-    // RESILIENCE: Added try/catch for the initial clinics fetch.
     const fetchClinics = async () => {
       try {
         const res = await fetch(`${API_URL}/api/v1/receptionist/clinics`, {
@@ -86,7 +79,7 @@ export default function ReceptionistDashboard() {
     if (!token) return;
 
     try {
-      const res = await fetch(`${API_URL}/api/v1/patients/search?query=${encodeURIComponent(searchQuery)}`, { 
+      const res = await fetch(`${API_URL}/api/v1/receptionist/patients/search?query=${encodeURIComponent(searchQuery)}`, { 
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (res.ok) {
@@ -141,7 +134,6 @@ export default function ReceptionistDashboard() {
 
       await fetchAppointments();
       
-      // Reset form states
       setPatientName(''); setAge(''); setSearchQuery(''); 
       setSearchResults([]); setSelectedExistingPatient(null);
       alert(locale === 'ar' ? 'تمت إضافة المراجع وتوجيهه للعيادة!' : 'Patient added and routed to clinic!');
@@ -161,7 +153,6 @@ export default function ReceptionistDashboard() {
       </h1>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Registration or Search Window */}
         <div className="bg-card p-6 rounded-xl shadow-sm border h-fit">
           <div className="flex gap-4 mb-6">
             <button type="button" onClick={() => setIsNewPatient(true)} className={`flex-1 py-2 font-bold rounded-md transition-colors ${isNewPatient ? 'bg-primary text-white' : 'bg-muted text-muted-foreground'}`}>
@@ -228,7 +219,6 @@ export default function ReceptionistDashboard() {
         </div>
 
         <div className="space-y-8">
-          {/* Active Queue */}
           <div className="bg-card p-6 rounded-xl shadow-sm border">
             <h2 className="text-xl font-semibold mb-4 flex justify-between items-center">
               {locale === 'ar' ? 'قائمة المراجعين المنتظرين' : 'Active Queue'} <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-bold">{queue.length}</span>
@@ -243,10 +233,9 @@ export default function ReceptionistDashboard() {
                       <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-lg">{p.patient_id}</div>
                       <div>
                         <span className="font-bold block text-foreground">
-                         ملف #{p.patient_id} - {p.patient?.name || (locale === 'ar' ? 'بدون اسم' : 'Unnamed')}
-                         </span>
+                          ملف #{p.patient_id} - {p.patient?.name || (locale === 'ar' ? 'بدون اسم' : 'Unnamed')}
+                        </span>
                         <span className="text-xs text-primary font-bold block mt-1">العيادة: {p.clinic?.name || 'غير محددة'}</span>
-                        <span className="text-xs text-primary font-medium block mt-0.5">{p.clinicName}</span>
                         <span className="text-xs text-muted-foreground">{p.session_type} | الحالة: {p.status}</span>
                       </div>
                     </div>
@@ -256,7 +245,6 @@ export default function ReceptionistDashboard() {
             )}
           </div>
 
-          {/* Completed Visits */}
           <div className="bg-green-50/50 p-6 rounded-xl shadow-sm border border-green-200">
             <h2 className="text-xl font-semibold mb-4 flex justify-between items-center text-green-900">
               {locale === 'ar' ? 'الزيارات المكتملة (اليوم)' : 'Completed Visits (Today)'} <span className="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-bold">{completedVisits.length}</span>
@@ -280,7 +268,6 @@ export default function ReceptionistDashboard() {
             )}
           </div>
         </div>
-
       </div>
     </div>
   );
