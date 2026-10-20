@@ -42,7 +42,7 @@ export default function ReceptionistDashboard() {
     
     // RESILIENCE: Added try/catch block to prevent app crash if the backend is down.
     try {
-      const res = await fetch(`${API_URL}/api/v1/doctor/appointments`, { 
+      const res = await fetch(`${API_URL}/api/v1/receptionist/appointments`, {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       
@@ -63,7 +63,7 @@ export default function ReceptionistDashboard() {
     // RESILIENCE: Added try/catch for the initial clinics fetch.
     const fetchClinics = async () => {
       try {
-        const res = await fetch(`${API_URL}/api/v1/clinics`, { 
+        const res = await fetch(`${API_URL}/api/v1/receptionist/clinics`, {
           headers: { 'Authorization': `Bearer ${token}` } 
         });
         if (res.ok) {
