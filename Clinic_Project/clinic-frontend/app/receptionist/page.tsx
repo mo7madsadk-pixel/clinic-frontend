@@ -107,7 +107,7 @@ export default function ReceptionistDashboard() {
 
     try {
       if (isNewPatient) {
-        const pRes = await fetch(`${API_URL}/api/v1/patients`, {
+        const pRes = await fetch(`${API_URL}/api/v1/receptionist/patients`, {
           method: 'POST', 
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({ name: patientName.trim(), age: Number(age) }),
