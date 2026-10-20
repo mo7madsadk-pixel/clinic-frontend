@@ -8,7 +8,7 @@ export function useQueueWs(room: string) {
   const wsRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    // backend is running on http://localhost:8000 by default
+    // backend is running on http://${process.env.NEXT_PUBLIC_API_URL} by default
     const wsUrl = `ws://${window.location.hostname}:8000/ws/${room}`;
     const ws = new WebSocket(wsUrl);
     wsRef.current = ws;

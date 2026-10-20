@@ -15,7 +15,7 @@ export default function NurseDashboard() {
     try {
       const token = document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
       if (!token) return;
-      const res = await fetch('http://localhost:8000/api/v1/nurse/queue', {
+      const res = await fetch('http://${process.env.NEXT_PUBLIC_API_URL}/api/v1/nurse/queue', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) setPatients(await res.json());
