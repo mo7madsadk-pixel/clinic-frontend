@@ -49,7 +49,7 @@ export default function DoctorDashboard() {
     }
     
     try {
-      const res = await fetch('http://${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/appointments', { 
+      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/appointments', { 
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -84,7 +84,7 @@ export default function DoctorDashboard() {
     };
 
     try {
-      const res = await fetch(`http://${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/appointments/${appointmentId}/examine`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/doctor/appointments/${appointmentId}/examine`, {
         method: 'POST',
         headers: { 
           'Authorization': `Bearer ${token}`, 

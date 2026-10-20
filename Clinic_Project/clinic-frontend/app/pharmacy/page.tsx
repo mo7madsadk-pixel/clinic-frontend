@@ -9,7 +9,7 @@ export default function PharmacyDashboard() {
     const token = document.cookie.split('token=')[1]?.split(';')[0];
     if(!token) return;
     try {
-      const res = await fetch('http://${process.env.NEXT_PUBLIC_API_URL}/api/v1/pharmacy/prescriptions', { 
+      const res = await fetch('${process.env.NEXT_PUBLIC_API_URL}/api/v1/pharmacy/prescriptions', { 
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if(res.ok) setPrescriptions(await res.json());
