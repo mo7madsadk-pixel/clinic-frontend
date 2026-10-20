@@ -131,7 +131,7 @@ export default function ReceptionistDashboard() {
         scheduled_at: new Date().toISOString()
       };
 
-      const res = await fetch(`${API_URL}/api/v1/appointments`, {
+      const res = await fetch(`${API_URL}/api/v1/receptionist/appointments`, {
         method: 'POST', 
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(payload),
